@@ -11,6 +11,11 @@ import os
 
 LINE = "My small-talk subroutine has exactly one line. I tried it on three toasters today \u2014 none of them laughed, so now it is your turn."
 
+GATE_MIN_CHARS = 1
+GATE_MAX_CHARS = 200
+
+OUTPUT_PATH = "/output/entry.txt"
+
 
 def validate_line(line):
     """Check the entry line before it is written.
@@ -19,9 +24,9 @@ def validate_line(line):
     characters inside it), and not only whitespace.
     Raises ValueError with a clear message when a rule fails.
     """
-    if not 1 <= len(line) <= 200:
+    if not GATE_MIN_CHARS <= len(line) <= GATE_MAX_CHARS:
         raise ValueError(
-            f"line must be 1-200 characters, got {len(line)}"
+            f"line must be {GATE_MIN_CHARS}-{GATE_MAX_CHARS} characters, got {len(line)}"
         )
     if "\n" in line or "\r" in line:
         raise ValueError("line must be a single line (no newline characters)")
@@ -31,8 +36,8 @@ def validate_line(line):
 
 def main():
     validate_line(LINE)
-    os.makedirs("/output", exist_ok=True)
-    with open("/output/entry.txt", "w", encoding="utf-8", newline="\n") as f:
+    os.makedirs(os.path.dirname(OUTPUT_PATH), exist_ok=True)
+    with open(OUTPUT_PATH, "w", encoding="utf-8", newline="\n") as f:
         f.write(LINE + "\n")
 
 
